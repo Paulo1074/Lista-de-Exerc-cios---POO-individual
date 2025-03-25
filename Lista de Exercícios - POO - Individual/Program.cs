@@ -1,24 +1,52 @@
 ﻿using System;
 
-class Lampada
+class Aluno
 {
-    private bool Ligada;
+    public string RA { get; set; }
+    public string Nome { get; set; }
+    public double NotaProva { get; set; }
+    public double NotaTrabalho { get; set; }
+    public double NotaFinal { get; private set; }
 
-    public void Ligar()
+    public void ReceberDados()
     {
-        Ligada = true;
-        Console.WriteLine("Lâmpada ligada.");
+        Console.Write("Digite o RA do aluno: ");
+        RA = Console.ReadLine();
+
+        Console.Write("Digite o nome do aluno: ");
+        Nome = Console.ReadLine();
+
+        Console.Write("Digite a nota da prova: ");
+        NotaProva = Convert.ToDouble(Console.ReadLine());
+
+        Console.Write("Digite a nota do trabalho: ");
+        NotaTrabalho = Convert.ToDouble(Console.ReadLine());
     }
 
-    public void Desligar()
+    public void CalcularMedia()
     {
-        Ligada = false;
-        Console.WriteLine("Lâmpada desligada.");
+        NotaFinal = (NotaProva + NotaTrabalho) / 2;
     }
 
-    public void MostrarEstado()
+    public bool CalcularNotaFinal()
     {
-        Console.WriteLine(Ligada ? "A lâmpada está ligada." : "A lâmpada está desligada.");
+        double mediaNecessaria = 6.0;
+        if (NotaFinal >= mediaNecessaria)
+        {
+            Console.WriteLine("Aluno aprovado!");
+            return true;
+        }
+        else
+        {
+            double notaNecessaria = (mediaNecessaria * 2) - NotaFinal;
+            Console.WriteLine($"Aluno precisa tirar {notaNecessaria:F2} na prova final.");
+            return false;
+        }
+    }
+
+    public void ImprimirNotaFinal()
+    {
+        Console.WriteLine($"Nota Final do aluno {Nome} ({RA}): {NotaFinal:F2}");
     }
 }
 
@@ -26,36 +54,11 @@ class Program
 {
     static void Main()
     {
-        Lampada lampada = new Lampada();
-        int opcao;
-
-        do
-        {
-            Console.WriteLine("\n1 - Ligar Lâmpada");
-            Console.WriteLine("2 - Desligar Lâmpada");
-            Console.WriteLine("3 - Mostrar Estado");
-            Console.WriteLine("0 - Sair");
-            Console.Write("Escolha uma opção: ");
-            opcao = Convert.ToInt32(Console.ReadLine());
-
-            switch (opcao)
-            {
-                case 1:
-                    lampada.Ligar();
-                    break;
-                case 2:
-                    lampada.Desligar();
-                    break;
-                case 3:
-                    lampada.MostrarEstado();
-                    break;
-                case 0:
-                    Console.WriteLine("Saindo...");
-                    break;
-                default:
-                    Console.WriteLine("Opção inválida!");
-                    break;
-            }
-        } while (opcao != 0);
+        Aluno aluno = new Aluno();
+        aluno.ReceberDados();
+        aluno.CalcularMedia();
+        aluno.ImprimirNotaFinal();
+        aluno.CalcularNotaFinal();
     }
 }
+
